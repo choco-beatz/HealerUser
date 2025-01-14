@@ -8,8 +8,8 @@ import 'package:healer_user/constants/snackbar.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
 import 'package:healer_user/view/login/login.dart';
-import 'package:healer_user/view/signup/widgets/otp.dart';
-import 'package:healer_user/view/signup/widgets/otp_field.dart';
+import 'package:healer_user/view/sign_up/widgets/otp.dart';
+import 'package:healer_user/view/sign_up/widgets/otp_field.dart';
 import 'package:healer_user/view/widgets/button.dart';
 
 class Otpscreen extends StatelessWidget {

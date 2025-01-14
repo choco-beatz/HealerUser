@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:healer_user/model/appointmentmodel/appointment_model.dart';
+import 'package:healer_user/model/appointmentmodel/payment_response_model.dart';
 import 'package:healer_user/model/appointmentmodel/slot_model.dart';
 import 'package:healer_user/model/appointmentmodel/cofirmslot_model.dart';
 import 'package:healer_user/services/api_helper.dart';
@@ -63,5 +64,47 @@ Future<List<AppointmentModel>> slotStatus(String status) async {
   } catch (e) {
     log('Error parsing slots data: $e');
     return [];
+  }
+}
+
+Future<PaymentResponseModel> initiatePayment(
+    String amount, String appointmentId) async {
+  final response = await makeRequest(initiatePaymentUrl, 'POST',
+      body: jsonEncode({"amount": amount, "appointmentId": appointmentId}));
+
+  if (response == null || response.statusCode != 200) {
+    throw Exception('Payment initiation failed');
+  }
+
+  try {
+    log('body:${response.body}');
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    return PaymentResponseModel.fromJson(data);
+  } catch (e) {
+    log('Error parsing payment data: $e');
+    throw Exception('Payment data parsing failed');
+  }
+}
+
+Future<bool> verifyPayment(
+    String paymentId, String orderId, String signature) async {
+  try {
+    final response = await makeRequest(verifyPaymentUrl, 'POST',
+        body: jsonEncode({
+          "paymentId": paymentId,
+          "orderId": orderId,
+          "signature": signature
+        }));
+
+    if (response == null || response.statusCode != 200) {
+      log('body:${response!.body}');
+      return false;
+    }
+
+    log('body:${response.body}');
+    return true;
+  } catch (e) {
+    log('Error parsing payment data: $e');
+    return false;
   }
 }

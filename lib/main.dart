@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healer_user/bloc/agora/agora_bloc.dart';
 import 'package:healer_user/bloc/appointment/appointment_bloc.dart';
+import 'package:healer_user/bloc/chat/chat_bloc.dart';
 import 'package:healer_user/bloc/registeration/registeration_bloc.dart';
 import 'package:healer_user/bloc/therapist/therapist_bloc.dart';
-import 'package:healer_user/view/splashscreen/splash_screen.dart';
+import 'package:healer_user/view/splash_screen/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AppointmentBloc(),
         ),
+        BlocProvider(create: (context) => AgoraBloc()),
+        BlocProvider(create: (context) => ChatBloc()),
       ],
       child:
           MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen()),

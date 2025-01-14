@@ -46,7 +46,7 @@ class _ViewTherapistState extends State<ViewTherapist>
         }
       }
     });
-    // context.read<TherapistBloc>().add(FetchTherapistEvent());
+    context.read<TherapistBloc>().add(FetchTherapistEvent());
   }
 
   @override
@@ -96,7 +96,9 @@ class _ViewTherapistState extends State<ViewTherapist>
                   final therapists = state.list;
                   if (therapists.isEmpty) {
                     return const Center(
-                      child: EmptyTherapist(),
+                      child: EmptyTherapist(
+                        description: 'No one is here',
+                      ),
                     );
                   }
                   return ListView.builder(
@@ -123,7 +125,9 @@ class _ViewTherapistState extends State<ViewTherapist>
                   final therapists = state.list;
                   if (therapists.isEmpty) {
                     return const Center(
-                      child: EmptyTherapist(),
+                      child: EmptyTherapist(
+                        description: 'No one is here',
+                      ),
                     );
                   }
                   return ListView.builder(
@@ -150,7 +154,9 @@ class _ViewTherapistState extends State<ViewTherapist>
                   final therapists = state.list;
                   if (therapists.isEmpty) {
                     return const Center(
-                      child: EmptyTherapist(),
+                      child: EmptyTherapist(
+                        description: "No one is here",
+                      ),
                     );
                   }
                   return ListView.builder(

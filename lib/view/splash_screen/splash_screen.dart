@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:healer_user/bloc/registeration/registeration_bloc.dart';
 import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/gradient.dart';
-import 'package:healer_user/view/homescreen/home_screen.dart';
+import 'package:healer_user/view/home_screen/home_screen.dart';
 import 'package:healer_user/view/login/login.dart';
 
 class SplashScreen extends StatefulWidget {

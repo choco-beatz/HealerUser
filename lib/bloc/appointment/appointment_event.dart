@@ -21,3 +21,18 @@ class SlotStatusEvent extends AppointmentEvent {
 
   SlotStatusEvent({required this.status});
 }
+
+class InitiatePaymentEvent extends AppointmentEvent {
+  final String appointmentId;
+  final String amount;
+
+  InitiatePaymentEvent({required this.appointmentId, required this.amount});
+}
+
+class VerifyPaymentEvent extends AppointmentEvent {
+  final String paymentId;
+  final String orderId;
+  final String signature;
+
+  VerifyPaymentEvent({required this.paymentId, required this.orderId, required this.signature});
+}

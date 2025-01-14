@@ -4,7 +4,6 @@ import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/textstyle.dart';
 import 'package:healer_user/view/appointment/screens/appointment_calender.dart';
 import 'package:healer_user/view/appointment/screens/appointment_status.dart';
-import 'package:healer_user/view/therapist/widgets/empty.dart';
 
 class Appointment extends StatefulWidget {
   final String therapistId;

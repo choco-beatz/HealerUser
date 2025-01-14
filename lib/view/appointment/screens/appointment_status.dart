@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healer_user/bloc/appointment/appointment_bloc.dart';
-import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/view/appointment/widgets/appoinment_therapist_card.dart';
 import 'package:healer_user/view/appointment/widgets/therapist_detail.dart';
 import 'package:healer_user/view/therapist/widgets/empty.dart';
@@ -24,7 +23,7 @@ class AppointmentStatus extends StatelessWidget {
           final appointment = state.appointments;
           if (appointment.isEmpty) {
             return const Center(
-              child: EmptyTherapist(),
+              child: EmptyTherapist(description: 'No Appointments taken yet',),
             );
           }
           return ListView.builder(

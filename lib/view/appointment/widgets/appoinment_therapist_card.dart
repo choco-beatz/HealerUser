@@ -4,7 +4,7 @@ import 'package:healer_user/constants/gradient.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
 import 'package:healer_user/model/appointmentmodel/appointment_model.dart';
-
+import 'package:healer_user/view/appointment/widgets/payment_alert.dart';
 
 class AppointmentTherapistCard extends StatelessWidget {
   const AppointmentTherapistCard({
@@ -87,13 +87,27 @@ class AppointmentTherapistCard extends StatelessWidget {
                       gradient: gradient,
                       borderRadius: BorderRadius.circular(10)),
                   child: Center(
-                    child: Text(
-                      status.toUpperCase(),
-                      style: const TextStyle(
-                          color: white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600),
-                    ),
+                    child: status == 'accepted'
+                        ? InkWell(
+                            onTap: () {
+                              showPaymentSlotDialog(
+                                  appointment.id, appointment.amount, context);
+                            },
+                            child: const Text(
+                              'PROCEED TO PAYMENT',
+                              style: TextStyle(
+                                  color: white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          )
+                        : Text(
+                            status.toUpperCase(),
+                            style: const TextStyle(
+                                color: white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
                   ),
                 ),
                 smallSpace,

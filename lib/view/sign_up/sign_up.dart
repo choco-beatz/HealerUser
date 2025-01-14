@@ -3,12 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healer_user/bloc/registeration/registeration_bloc.dart';
+import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/snackbar.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
 import 'package:healer_user/model/signupmodel/signup_model.dart';
-import 'package:healer_user/view/signup/otp_verification.dart';
-import 'package:healer_user/view/signup/widgets/onboard.dart';
+import 'package:healer_user/view/sign_up/otp_verification.dart';
+import 'package:healer_user/view/sign_up/widgets/onboard.dart';
 import 'package:healer_user/view/widgets/button.dart';
 import 'package:healer_user/view/widgets/textfield.dart';
 
@@ -64,7 +65,7 @@ class SignUp extends StatelessWidget {
                           return null;
                         },
                         decoration: textField('Name'),
-                        cursorColor: Colors.black26,
+                        cursorColor: textColor,
                         style: textFieldStyle),
                   ),
                   space,
@@ -81,7 +82,7 @@ class SignUp extends StatelessWidget {
                           return null;
                         },
                         decoration: textField('Email'),
-                        cursorColor: Colors.black26,
+                        cursorColor: textColor,
                         style: textFieldStyle),
                   ),
                   space,
@@ -99,7 +100,7 @@ class SignUp extends StatelessWidget {
                         },
                         keyboardType: TextInputType.visiblePassword,
                         decoration: textField('Password'),
-                        cursorColor: Colors.black26,
+                        cursorColor: textColor,
                         style: textFieldStyle),
                   ),
                   space,
@@ -117,7 +118,7 @@ class SignUp extends StatelessWidget {
                         },
                         keyboardType: TextInputType.visiblePassword,
                         decoration: textField('Confirm Password'),
-                        cursorColor: Colors.black26,
+                        cursorColor: textColor,
                         style: textFieldStyle),
                   ),
                   space,

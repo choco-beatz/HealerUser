@@ -16,3 +16,11 @@ const redGradient = LinearGradient(
       red,
       red1,
     ]);
+
+    const nullGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      white,
+      white
+    ]);

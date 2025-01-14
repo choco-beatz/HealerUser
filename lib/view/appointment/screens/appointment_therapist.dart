@@ -34,7 +34,10 @@ class AppointmentTherapist extends StatelessWidget {
           final therapists = state.list;
           if (therapists.isEmpty) {
             return const Center(
-              child: EmptyTherapist(),
+              child: EmptyTherapist(
+                description:
+                    "Only clients of any therapist can book appointments",
+              ),
             );
           }
           return ListView.builder(

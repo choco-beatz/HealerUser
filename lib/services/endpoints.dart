@@ -10,3 +10,6 @@ const requestStatusUrl = '${baseUrl}requests/client?status=';
 const getSlotsUrl = '${baseUrl}slots/';
 const confirmSlotsUrl = '${baseUrl}appointment/book/';
 const slotStatusUrl = '${baseUrl}appointment/client?status=';
+const initiatePaymentUrl = '${baseUrl}payment/initiate';
+const verifyPaymentUrl = '${baseUrl}payment/verify';
+const inboxUrl = '${baseUrl}chats';

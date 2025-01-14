@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:healer_user/model/appointmentmodel/appointment_model.dart';
+import 'package:healer_user/model/appointmentmodel/payment_response_model.dart';
 import 'package:healer_user/model/appointmentmodel/slot_model.dart';
 import 'package:healer_user/model/appointmentmodel/cofirmslot_model.dart';
 import 'package:healer_user/services/appointment/appointment_service.dart';
@@ -27,7 +28,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
         log(e.toString());
         emit(state.copyWith(
           isLoading: false,
-          hasError: true,
+          // hasError: true,
         ));
       }
     });
@@ -68,7 +69,47 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
         log(e.toString());
         emit(state.copyWith(
           isLoading: false,
+          hasError: true,
+        ));
+      }
+    });
 
+    on<InitiatePaymentEvent>((event, emit) async {
+      if (state.isLoading) return;
+
+      try {
+        PaymentResponseModel response =
+            await initiatePayment(event.amount, event.appointmentId);
+
+        emit(state.copyWith(
+          isSuccess: true,
+          paymentResponse: response,
+          isLoading: false,
+        ));
+      } catch (e) {
+        log(e.toString());
+        emit(state.copyWith(
+          isLoading: false,
+          hasError: true,
+        ));
+      }
+    });
+
+    on<VerifyPaymentEvent>((event, emit) async {
+      if (state.isLoading) return;
+
+      try {
+        bool success = await verifyPayment(
+            event.paymentId, event.orderId, event.signature);
+        log('success: $success');
+        emit(state.copyWith(
+          isSuccess: success,
+          isLoading: false,
+        ));
+      } catch (e) {
+        log('verify:${e.toString()}');
+        emit(state.copyWith(
+          isLoading: false,
           hasError: true,
         ));
       }

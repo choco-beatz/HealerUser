@@ -6,12 +6,14 @@ class AppointmentState {
   final bool isInitialized;
   final bool isSuccess;
   final bool isConfirm;
+  final PaymentResponseModel? paymentResponse;
   final bool hasError;
   final List<SlotModel> slots;
   final List<AppointmentModel> appointments;
   const AppointmentState({
     this.slots = const [],
     this.isSuccess = false,
+    this.paymentResponse,
     this.isConfirm = false,
     this.appointments = const [],
     this.isLoading = false,
@@ -23,6 +25,7 @@ class AppointmentState {
     List<SlotModel>? slots,
     bool? isLoading,
     bool? isConfirm,
+    PaymentResponseModel? paymentResponse,
     List<AppointmentModel>? appointments,
     bool? isInitialized,
     bool? isSuccess,
@@ -31,6 +34,7 @@ class AppointmentState {
     return AppointmentState(
       slots: slots ?? this.slots,
       isConfirm: isConfirm ?? this.isConfirm,
+      paymentResponse: paymentResponse ?? this.paymentResponse,
       isLoading: isLoading ?? this.isLoading,
       appointments: appointments ?? this.appointments,
       isInitialized: isInitialized ?? this.isInitialized,

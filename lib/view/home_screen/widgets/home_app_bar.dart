@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/gradient.dart';
 import 'package:healer_user/constants/textstyle.dart';
-import 'package:healer_user/view/homescreen/widgets/greetings.dart';
+import 'package:healer_user/view/home_screen/widgets/greetings.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({
