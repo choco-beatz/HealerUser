@@ -5,6 +5,7 @@ import 'package:healer_user/constants/snackbar.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
 import 'package:healer_user/view/appointment/widgets/confirm_slot.dart';
+import 'package:healer_user/view/widgets/loading.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -38,10 +39,9 @@ class _AppointmentCalenderState extends State<AppointmentCalender> {
     return Scaffold(
         body: BlocListener<AppointmentBloc, AppointmentState>(
       listener: (context, state) {
-        if (state.isConfirm) {
+        if (state is SlotConfirmed) {
           ScaffoldMessenger.of(context).showSnackBar(slotConfirmed);
-        }
-        if (state.hasError) {
+        } else if (state is AppointmentError) {
           ScaffoldMessenger.of(context).showSnackBar(somethingWentWrong);
         }
       },
@@ -131,23 +131,21 @@ class _AppointmentCalenderState extends State<AppointmentCalender> {
                 style: smallBold,
               ),
               BlocBuilder<AppointmentBloc, AppointmentState>(
-                builder: (context, state) {
-                  if (state.isLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (state.hasError) {
-                    return const Center(
-                      child: Text('Error'),
-                    );
-                  }
+                  builder: (context, state) {
+                if (state is AppointmentLoading) {
+                  return const Loading();
+                } else if (state is AppointmentError) {
+                  return const Center(
+                    child: Text('Error loading slots'),
+                  );
+                } else if (state is SlotsLoaded) {
                   final slots = state.slots;
                   if (slots.isEmpty) {
                     return const Center(
                       child: Text('No slots available'),
                     );
                   }
+
                   return Wrap(
                     spacing: 10,
                     runSpacing: 10,
@@ -166,8 +164,10 @@ class _AppointmentCalenderState extends State<AppointmentCalender> {
                           ));
                     }).toList(),
                   );
-                },
-              ),
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }),
             ]),
       )),
     ));

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:healer_user/model/therapistmodel/therapist_model.dart';
+import 'package:healer_user/model/therapist_model/therapist_model.dart';
 import 'package:healer_user/services/api_helper.dart';
 import 'package:healer_user/services/endpoints.dart';
 
@@ -31,13 +31,13 @@ Future<int> requestSent(String clientId, String therapistId) async {
 }
 
 Future<List<TherapistModel>> requestStatus(String status) async {
-  log('$requestSentUrl$status');
+  // log('$requestSentUrl$status');
   final response = await makeRequest('$requestStatusUrl$status', 'GET');
   // log(response!.body.toString());
   if (response == null || response.statusCode != 200) return [];
 
   try {
-    log(response.body);
+    // log(response.body);
     final data = jsonDecode(response.body) as Map<String, dynamic>;
     final requests = data['requests'] as List;
 

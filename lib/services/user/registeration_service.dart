@@ -1,43 +1,25 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:healer_user/model/loginmodel/login_model.dart';
-import 'package:healer_user/model/loginmodel/login_response_model.dart';
-import 'package:healer_user/model/signupmodel/signup_response_model.dart';
+import 'dart:io';
+import 'package:healer_user/model/login_model/login_model.dart';
+import 'package:healer_user/model/login_model/login_response_model.dart';
+import 'package:healer_user/model/signup_model/signup_response_model.dart';
+import 'package:healer_user/services/api_helper.dart';
 import 'package:healer_user/services/endpoints.dart';
 import 'package:healer_user/services/token.dart';
 import 'package:healer_user/services/user/user_id.dart';
 import 'package:http/http.dart' as http;
-import 'package:healer_user/model/signupmodel/signup_model.dart';
+import 'package:healer_user/model/signup_model/signup_model.dart';
 
-Future<bool> registeration(SignupModel user) async {
-  try {
-    final response = await http.post(
-      Uri.parse(registerationUrl),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-          {"email": user.email, "name": user.name, "password": user.password}),
-    );
-    if (response.statusCode == 201) {
-      log(response.body);
-      final signupResponse =
-          SignupResponseModel.fromJson(jsonDecode(response.body));
-      log(signupResponse.isVerified.toString());
-      if (signupResponse.isVerified == true && signupResponse.token != null) {
-        await storeToken(signupResponse.token!);
-        await storeUserId(signupResponse.userId);
-      } else {
-        log('Not verified');
-      }
+Future<bool> registeration(SignupModel user, File? imageFile) async {
+  log('from service : ${user.name}');
+  return makeMultipartRequest(
+    url: registerationUrl,
+    method: 'POST',
+    user: user,
+    imageFile: imageFile,
+  );
 
-      return true;
-    } else {
-      log('SignUp failed with status: ${response.body}');
-      return false;
-    }
-  } catch (e) {
-    log('error:${e.toString()}');
-    return false;
-  }
 }
 
 Future<bool> veriftOtp(String otp, String email) async {

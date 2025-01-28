@@ -16,14 +16,14 @@ void showPaymentSlotDialog(String id, int amount, BuildContext context) {
       builder: (context) {
         return BlocListener<AppointmentBloc, AppointmentState>(
           listener: (context, state) {
-            if (state.isSuccess && state.paymentResponse != null) {
-              _initiateRazorpayPayment(
-                context,
-                state.paymentResponse!.amount,
-                state.paymentResponse!.orderId,
-              );
-            }
-          },
+            if (state is PaymentInitiated && state.paymentResponse != null) {
+      _initiateRazorpayPayment(
+        context,
+        state.paymentResponse.amount,
+        state.paymentResponse.orderId,
+      );
+    }
+  },
           child: AlertDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healer_user/bloc/appointment/appointment_bloc.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
-import 'package:healer_user/model/appointmentmodel/slot_model.dart';
-import 'package:healer_user/model/appointmentmodel/cofirmslot_model.dart';
+import 'package:healer_user/model/appointment_model/slot_model.dart';
+import 'package:healer_user/model/appointment_model/cofirmslot_model.dart';
 import 'package:healer_user/view/appointment/widgets/field.dart';
 import 'package:healer_user/view/widgets/dialog_button.dart';
 

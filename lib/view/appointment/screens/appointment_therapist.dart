@@ -5,6 +5,7 @@ import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/view/appointment/widgets/therapist_card.dart';
 import 'package:healer_user/view/therapist/widgets/empty.dart';
 import 'package:healer_user/view/therapist/widgets/therapist_detail.dart';
+import 'package:healer_user/view/widgets/loading.dart';
 
 class AppointmentTherapist extends StatelessWidget {
   const AppointmentTherapist({super.key});
@@ -29,8 +30,11 @@ class AppointmentTherapist extends StatelessWidget {
           ),
         ),
       ),
-      body: BlocBuilder<TherapistBloc, TherapistState>(
-        builder: (context, state) {
+      body:
+          BlocBuilder<TherapistBloc, TherapistState>(builder: (context, state) {
+        if (state is TherapistLoading) {
+          return const Loading();
+        } else if (state is RequestStatusLoaded) {
           final therapists = state.list;
           if (therapists.isEmpty) {
             return const Center(
@@ -57,8 +61,10 @@ class AppointmentTherapist extends StatelessWidget {
                       therapist: therapist,
                     ));
               });
-        },
-      ),
+        } else {
+          return const SizedBox.shrink();
+        }
+      }),
     );
   }
 }

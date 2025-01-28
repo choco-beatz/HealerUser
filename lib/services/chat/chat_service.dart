@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:healer_user/model/chat/chat_model.dart';
-import 'package:healer_user/model/chat/message_model.dart';
+import 'package:healer_user/model/chat_model/chat_model.dart';
+import 'package:healer_user/model/chat_model/message_model.dart';
 import 'package:healer_user/services/api_helper.dart';
 import 'package:healer_user/services/endpoints.dart';
 

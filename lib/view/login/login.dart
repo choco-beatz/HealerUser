@@ -4,7 +4,7 @@ import 'package:healer_user/bloc/registeration/registeration_bloc.dart';
 import 'package:healer_user/constants/snackbar.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
-import 'package:healer_user/model/loginmodel/login_model.dart';
+import 'package:healer_user/model/login_model/login_model.dart';
 import 'package:healer_user/view/home_screen/home_screen.dart';
 import 'package:healer_user/view/login/widgets/welcome.dart';
 import 'package:healer_user/view/sign_up/otp_verification.dart';

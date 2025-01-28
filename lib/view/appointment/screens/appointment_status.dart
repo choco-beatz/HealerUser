@@ -4,6 +4,7 @@ import 'package:healer_user/bloc/appointment/appointment_bloc.dart';
 import 'package:healer_user/view/appointment/widgets/appoinment_therapist_card.dart';
 import 'package:healer_user/view/appointment/widgets/therapist_detail.dart';
 import 'package:healer_user/view/therapist/widgets/empty.dart';
+import 'package:healer_user/view/widgets/loading.dart';
 
 class AppointmentStatus extends StatelessWidget {
   final String status;
@@ -19,11 +20,22 @@ class AppointmentStatus extends StatelessWidget {
 
     return Scaffold(
       body: BlocBuilder<AppointmentBloc, AppointmentState>(
-        builder: (context, state) {
+          builder: (context, state) {
+        if (state is AppointmentLoading) {
+          return const Loading();
+        }
+        if (state is AppointmentError) {
+          return Center(
+            child: Text(state.errorMessage),
+          );
+        }
+        if (state is AppointmentsLoaded) {
           final appointment = state.appointments;
           if (appointment.isEmpty) {
             return const Center(
-              child: EmptyTherapist(description: 'No Appointments taken yet',),
+              child: EmptyTherapist(
+                description: 'No Appointments taken yet',
+              ),
             );
           }
           return ListView.builder(
@@ -44,8 +56,10 @@ class AppointmentStatus extends StatelessWidget {
                       appointment: therapist,
                     ));
               });
-        },
-      ),
+        } else {
+          return SizedBox.shrink();
+        }
+      }),
     );
   }
 }

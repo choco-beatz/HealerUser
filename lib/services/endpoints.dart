@@ -13,3 +13,6 @@ const slotStatusUrl = '${baseUrl}appointment/client?status=';
 const initiatePaymentUrl = '${baseUrl}payment/initiate';
 const verifyPaymentUrl = '${baseUrl}payment/verify';
 const inboxUrl = '${baseUrl}chats';
+const profileUrl = '${baseUrl}user/profile';
+const editProfileUrl = '${baseUrl}user/client/profile';
+

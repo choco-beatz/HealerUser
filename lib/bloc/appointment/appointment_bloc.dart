@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:healer_user/model/appointmentmodel/appointment_model.dart';
-import 'package:healer_user/model/appointmentmodel/payment_response_model.dart';
-import 'package:healer_user/model/appointmentmodel/slot_model.dart';
-import 'package:healer_user/model/appointmentmodel/cofirmslot_model.dart';
+import 'package:healer_user/model/appointment_model/appointment_model.dart';
+import 'package:healer_user/model/appointment_model/payment_response_model.dart';
+import 'package:healer_user/model/appointment_model/slot_model.dart';
+import 'package:healer_user/model/appointment_model/cofirmslot_model.dart';
 import 'package:healer_user/services/appointment/appointment_service.dart';
 
 part 'appointment_event.dart';
@@ -14,104 +13,64 @@ part 'appointment_state.dart';
 class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   AppointmentBloc() : super(AppointmentInitial()) {
     on<GetSlotsEvent>((event, emit) async {
-      if (state.isLoading) return;
+      emit(AppointmentLoading());
 
       try {
         List<SlotModel> list = await fetchSlots(event.therapistId, event.date);
-        log(list.toString());
-        emit(state.copyWith(
-          slots: list,
-          isLoading: false,
-          isInitialized: true,
-        ));
+        emit(SlotsLoaded(list));
       } catch (e) {
         log(e.toString());
-        emit(state.copyWith(
-          isLoading: false,
-          // hasError: true,
-        ));
+        emit(AppointmentError('Failed to fetch slots.'));
       }
     });
 
     on<SlotStatusEvent>((event, emit) async {
-      if (state.isLoading) return;
+      emit(AppointmentLoading());
 
       try {
         List<AppointmentModel> list = await slotStatus(event.status);
-        log(list.toString());
-        emit(state.copyWith(
-          appointments: list,
-          isLoading: false,
-          isInitialized: true,
-        ));
+        emit(AppointmentsLoaded(list));
       } catch (e) {
         log(e.toString());
-        emit(state.copyWith(
-          isLoading: false,
-          hasError: true,
-        ));
+        emit(AppointmentError('Failed to fetch appointments.'));
       }
     });
 
     on<ConfirmSlotsEvent>((event, emit) async {
-      if (state.isLoading) return;
+      emit(AppointmentLoading());
 
       try {
         bool success = await confirmSlots(event.therapistId, event.slot);
-        log(success.toString());
-        emit(state.copyWith(
-          isSuccess: success,
-          isLoading: false,
-          isConfirm: true,
-          isInitialized: true,
-        ));
+        emit(SlotConfirmed(success));
       } catch (e) {
         log(e.toString());
-        emit(state.copyWith(
-          isLoading: false,
-          hasError: true,
-        ));
+        emit(AppointmentError('Failed to confirm slots.'));
       }
     });
 
     on<InitiatePaymentEvent>((event, emit) async {
-      if (state.isLoading) return;
+      emit(AppointmentLoading());
 
       try {
         PaymentResponseModel response =
             await initiatePayment(event.amount, event.appointmentId);
-
-        emit(state.copyWith(
-          isSuccess: true,
-          paymentResponse: response,
-          isLoading: false,
-        ));
+        emit(PaymentInitiated(response));
       } catch (e) {
         log(e.toString());
-        emit(state.copyWith(
-          isLoading: false,
-          hasError: true,
-        ));
+        emit(AppointmentError('Failed to initiate payment.'));
       }
     });
 
     on<VerifyPaymentEvent>((event, emit) async {
-      if (state.isLoading) return;
+      emit(AppointmentLoading());
 
       try {
         bool success = await verifyPayment(
             event.paymentId, event.orderId, event.signature);
-        log('success: $success');
-        emit(state.copyWith(
-          isSuccess: success,
-          isLoading: false,
-        ));
+        emit(PaymentVerified(success));
       } catch (e) {
-        log('verify:${e.toString()}');
-        emit(state.copyWith(
-          isLoading: false,
-          hasError: true,
-        ));
+        log(e.toString());
+        emit(AppointmentError('Payment verification failed.'));
       }
     });
   }

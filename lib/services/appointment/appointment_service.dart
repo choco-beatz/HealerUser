@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:healer_user/model/appointmentmodel/appointment_model.dart';
-import 'package:healer_user/model/appointmentmodel/payment_response_model.dart';
-import 'package:healer_user/model/appointmentmodel/slot_model.dart';
-import 'package:healer_user/model/appointmentmodel/cofirmslot_model.dart';
+import 'package:healer_user/model/appointment_model/appointment_model.dart';
+import 'package:healer_user/model/appointment_model/payment_response_model.dart';
+import 'package:healer_user/model/appointment_model/slot_model.dart';
+import 'package:healer_user/model/appointment_model/cofirmslot_model.dart';
 import 'package:healer_user/services/api_helper.dart';
 import 'package:healer_user/services/endpoints.dart';
 

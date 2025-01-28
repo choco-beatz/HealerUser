@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:healer_user/model/chat/chat_model.dart';
-import 'package:healer_user/model/chat/message_model.dart';
+import 'package:healer_user/model/chat_model/chat_model.dart';
+import 'package:healer_user/model/chat_model/message_model.dart';
 import 'package:healer_user/services/chat/chat_service.dart';
 
 

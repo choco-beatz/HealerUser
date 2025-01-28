@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
-import 'package:healer_user/model/appointmentmodel/appointment_model.dart';
+import 'package:healer_user/model/appointment_model/appointment_model.dart';
 class TherapistDetails extends StatelessWidget {
   final TherapistData therapist;
   const TherapistDetails({

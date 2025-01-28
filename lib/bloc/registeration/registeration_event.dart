@@ -4,8 +4,10 @@ part of 'registeration_bloc.dart';
 class RegisterationEvent {}
 
 class SignUpEvent extends RegisterationEvent {
+  File? imageFile;
   SignupModel data;
   SignUpEvent({
+    this.imageFile,
     required this.data,
   });
 }
@@ -36,3 +38,5 @@ class LoginEvent extends RegisterationEvent {
 class CheckTokenEvent extends RegisterationEvent {}
 
 class LogOutEvent extends RegisterationEvent {}
+
+class PickImageEvent extends RegisterationEvent {}

@@ -5,6 +5,7 @@ class RegisterationState {
   final bool isVerified;
   final bool redirect;
   final bool hasError;
+  final File? pickedImage;
   final bool isInitalized;
   final bool isSuccess;
   final bool resentOtp;
@@ -14,6 +15,7 @@ class RegisterationState {
       {this.tokenValid = false,
       this.isVerified = false,
       this.redirect = false,
+      this.pickedImage,
       this.isSuccess = false,
       this.hasError = false,
       this.isInitalized = false,

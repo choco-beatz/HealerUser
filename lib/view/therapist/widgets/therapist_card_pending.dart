@@ -5,7 +5,7 @@ import 'package:healer_user/bloc/therapist/therapist_bloc.dart';
 import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
-import 'package:healer_user/model/therapistmodel/therapist_model.dart';
+import 'package:healer_user/model/therapist_model/therapist_model.dart';
 import 'package:healer_user/view/therapist/widgets/request_button.dart';
 
 class TherapistCardPending extends StatelessWidget {

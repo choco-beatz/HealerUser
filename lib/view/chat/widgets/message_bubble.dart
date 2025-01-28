@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/gradient.dart';
 import 'package:healer_user/view/chat/screens/message_screen.dart';
+import 'package:intl/intl.dart';
 
 class MessageBubble extends StatelessWidget {
   final Message message;
@@ -11,7 +12,7 @@ class MessageBubble extends StatelessWidget {
     required this.message,
   });
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Align(
       alignment:
@@ -64,8 +65,10 @@ class MessageBubble extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              '${message.timestamp.hour}:${message.timestamp.minute.toString().padLeft(2, '0')}',
+              DateFormat('h:mm a').format(message.timestamp),
+              // '${message.timestamp.hour}:${message.timestamp.minute.toString().padLeft(2, '0')}',
               style: TextStyle(
+                fontWeight: FontWeight.w500,
                 fontSize: 12,
                 color: message.isSentByMe ? white : black,
               ),

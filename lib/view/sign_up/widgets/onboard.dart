@@ -7,13 +7,16 @@ class Onboadrd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        const Text('Welcome Onboard', style: bigBold),
-        const Text('We are here to help you', style: textFieldStyle),
         space,
-        Image.asset(height: 100, 'asset/happy.png'),
         space,
+        space,
+        Text('Welcome Onboard', style: bigBold),
+        Text('We are here to help you', style: textFieldStyle),
+        // space,
+        // Image.asset(height: 100, 'asset/happy.png'),
+        // space,
         space
       ],
     );

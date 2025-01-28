@@ -1,17 +1,20 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:healer_user/model/loginmodel/login_model.dart';
-import 'package:healer_user/model/signupmodel/signup_model.dart';
+import 'package:healer_user/model/login_model/login_model.dart';
+import 'package:healer_user/model/signup_model/signup_model.dart';
 import 'package:healer_user/services/token.dart';
 import 'package:healer_user/services/user/registeration_service.dart';
+import 'package:image_picker/image_picker.dart';
 
 part 'registeration_event.dart';
 part 'registeration_state.dart';
 
 class RegisterationBloc extends Bloc<RegisterationEvent, RegisterationState> {
   late final StreamSubscription tokenCheck;
+  final ImagePicker imagePicker = ImagePicker();
 
   RegisterationBloc() : super(RegisterationInitial()) {
     tokenCheck = Stream.periodic(
@@ -23,7 +26,7 @@ class RegisterationBloc extends Bloc<RegisterationEvent, RegisterationState> {
       },
     );
     on<SignUpEvent>((event, emit) async {
-      bool success = await registeration(event.data);
+      bool success = await registeration(event.data, event.imageFile);
       if (success == true) {
         emit(RegisterationState(isSuccess: true));
       } else {
@@ -105,6 +108,21 @@ class RegisterationBloc extends Bloc<RegisterationEvent, RegisterationState> {
         emit(RegisterationState(
           hasError: true,
           message: 'Logout failed. Please try again.',
+        ));
+      }
+    });
+
+    on<PickImageEvent>((event, emit) async {
+      final pickedFile =
+          await imagePicker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        emit(RegisterationState(
+          pickedImage: File(pickedFile.path),
+          isInitalized: state.isInitalized,
+        ));
+      } else {
+        emit(RegisterationState(
+          isInitalized: state.isInitalized,
         ));
       }
     });

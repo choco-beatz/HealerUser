@@ -5,6 +5,7 @@ import 'package:healer_user/view/widgets/textfield.dart';
 
 Widget buildTextFormField({
   required String label,
+  bool isNumber = false,
   required TextEditingController controller,
   String? Function(String?)? validator,
   String hint = '',
@@ -20,6 +21,8 @@ Widget buildTextFormField({
       SizedBox(
         height: isMultiline ? 150 : 55,
         child: TextFormField(
+          keyboardType: isNumber ? TextInputType.number : null,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           controller: controller,
           validator: validator,
           maxLines: isMultiline ? 5 : 1,
