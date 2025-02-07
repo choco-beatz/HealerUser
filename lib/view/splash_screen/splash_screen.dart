@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(height: 150, 'asset/treatment.png'),
+                Image.asset(height: 150, 'asset/treatmentW.png'),
                 Text('Healer',
                     style: GoogleFonts.satisfy(
                       textStyle: const TextStyle(color: white, fontSize: 50),

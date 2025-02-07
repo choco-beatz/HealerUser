@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => UserBloc()),
         BlocProvider(
-            create: (context) => AgoraBloc()),
+            create: (context) => AgoraBloc(AgoraService())),
         BlocProvider(create: (context) => ChatBloc()),
       ],
       child:

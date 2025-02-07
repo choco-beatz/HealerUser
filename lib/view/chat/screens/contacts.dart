@@ -6,7 +6,7 @@ import 'package:healer_user/services/chat/socket.dart';
 import 'package:healer_user/view/chat/screens/message_screen.dart';
 import 'package:healer_user/view/chat/widgets/chat_card.dart';
 import 'package:healer_user/view/chat/widgets/message_card.dart';
-import 'package:healer_user/view/therapist/widgets/empty.dart';
+import 'package:healer_user/view/widgets/empty.dart';
 import 'package:healer_user/view/widgets/appbar.dart';
 import 'package:healer_user/view/widgets/loading.dart';
 import 'package:intl/intl.dart';
@@ -34,9 +34,11 @@ class Therapists extends StatelessWidget {
 
             if (therapists.isEmpty) {
               return const Center(
-                child: EmptyTherapist(
-                  description:
-                      'Only clients can chat to their respective therapist',
+                child: Empty(
+                  title: 'No Conversations Yet',
+                  subtitle:
+                      'Once a therapist accepts your request, you can start chatting with them here. Stay tuned',
+                  image: 'asset/emptyChat.jpg',
                 ),
               );
             }
@@ -52,15 +54,19 @@ class Therapists extends StatelessWidget {
                     itemCount: therapists.length,
                     itemBuilder: (context, index) {
                       final therapist = therapists[index];
-                      final chat = chats[index];
-                      if (chats.isEmpty) {
+
+                      // Ensure index is within bounds of chats list
+                      final chat = (index < chats.length) ? chats[index] : null;
+
+                      if (chat == null) {
+                        // If there is no chat for this therapist
                         return GestureDetector(
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ChatScreen(
-                                name: therapist.name,
-                                image: therapist.image!,
+                                name: therapist.profile.name,
+                                image: therapist.image,
                                 id: therapist.id,
                                 socketService: socketService,
                               ),
@@ -77,27 +83,30 @@ class Therapists extends StatelessWidget {
                         return InkWell(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => BlocProvider(
-                                        create: (context) => ChatBloc()
-                                          ..add(LoadMessagesEvent(chat.id)),
-                                        child: ChatScreen(
-                                          name: therapist.name,
-                                          image: therapist.image!,
-                                          id: therapist.id,
-                                          socketService: socketService,
-                                        ))));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  create: (context) => ChatBloc()
+                                    ..add(LoadMessagesEvent(chat.id)),
+                                  child: ChatScreen(
+                                    name: therapist.profile.name,
+                                    image: therapist.image,
+                                    id: therapist.id,
+                                    socketService: socketService,
+                                  ),
+                                ),
+                              ),
+                            );
                           },
                           child: MessageCard(
                             socketService: socketService,
                             height: MediaQuery.of(context).size.height,
                             width: MediaQuery.of(context).size.width,
                             lastMessage: chat.lastMessage.text,
-                            name: therapist.name,
+                            name: therapist.profile.name,
                             time: DateFormat('hh:mm a')
                                 .format(chat.lastMessage.createdAt),
-                            image: therapist.image!,
+                            image: therapist.image,
                           ),
                         );
                       }

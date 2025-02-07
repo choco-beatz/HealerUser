@@ -73,21 +73,29 @@ class _AppoinmentState extends State<Appointment>
             child: const Icon(Icons.chevron_left, size: 30),
           ),
           backgroundColor: white,
-          bottom: TabBar(
-            controller: tabController,
-            dividerColor: white,
-            labelColor: white,
-            labelPadding: const EdgeInsets.symmetric(horizontal: 2),
-            isScrollable: true,
-            unselectedLabelColor: main1,
-            indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: main1),
-            tabs: const [
-              Tab(text: "        Slots       "),
-              Tab(text: "      Pending     "),
-              Tab(text: "      Confirm     "),
-              Tab(text: "     Upcoming     "),
-            ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(50),
+            child: Container(
+              alignment: Alignment.centerLeft, // Ensures tabs start at the left
+              child: TabBar(
+                controller: tabController,
+                dividerColor: white,
+                labelColor: white,
+                labelPadding: EdgeInsets.zero, // Remove extra padding
+                isScrollable: false,
+                unselectedLabelColor: main2,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: main2,
+                ),
+                tabs: const [
+                  Tab(text: "        Slots       "),
+                  Tab(text: "      Pending     "),
+                  Tab(text: "      Confirm     "),
+                  Tab(text: "     Upcoming     "),
+                ],
+              ),
+            ),
           ),
         ),
         body: TabBarView(controller: tabController, children: [

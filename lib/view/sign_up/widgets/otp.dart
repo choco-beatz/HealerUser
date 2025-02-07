@@ -12,7 +12,7 @@ class Otp extends StatelessWidget {
         const Text('OTP Verification', style: bigBold),
         const Text('Please check you email for OTP.', style: textFieldStyle),
         space,
-        Image.asset(height: 100, 'asset/otp.png'),
+        Image.asset(height: 100, 'asset/treartment.png'),
         space,
         space
       ],

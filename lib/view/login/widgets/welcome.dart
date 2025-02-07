@@ -9,9 +9,8 @@ class Welcome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Image.asset(height: 200, 'asset/treatment.png'),
         const Text('Welcome Back', style: bigBold),
-        space,
-        Image.asset(height: 100, 'asset/welcome.png'),
         space,
         space
       ],

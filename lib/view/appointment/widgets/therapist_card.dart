@@ -34,17 +34,17 @@ class TherapistCard extends StatelessWidget {
                     child: CircleAvatar(
                         backgroundColor: transparent,
                         radius: width * 0.14,
-                        child: (therapist.image!.split('.').last == 'png')
+                        child: (therapist.image.split('.').last == 'png')
                             ? Image.network(
                                 fit: BoxFit.fitHeight,
-                                therapist.image!,
+                                therapist.image,
                                 width: 80,
                                 height: 80,
                               )
                             : ClipOval(
                                 child: Image.network(
                                   fit: BoxFit.fitHeight,
-                                  therapist.image!,
+                                  therapist.image,
                                   width: 80,
                                   height: 80,
                                 ),
@@ -55,7 +55,7 @@ class TherapistCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(therapist.name, style: smallBold),
+                      Text(therapist.profile.name, style: smallBold),
                       smallSpace,
                       InkWell(
                           onTap: () {

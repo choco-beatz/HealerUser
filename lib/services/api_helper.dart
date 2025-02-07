@@ -142,7 +142,7 @@ Future<bool> makeEditMultipartRequest({
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       log('Response body: ${response.body}');
-    final UserModel user = parseUserResponse(jsonDecode(response.body));
+    // final UserModel user = parseUserResponse(jsonDecode(response.body));
     
       return true;
     } else {

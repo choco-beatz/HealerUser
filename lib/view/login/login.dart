@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healer_user/bloc/registeration/registeration_bloc.dart';
+import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/snackbar.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
@@ -84,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                           return null;
                         },
                         decoration: textField('Email'),
-                        cursorColor: Colors.black26,
+                        cursorColor: textColor,
                         style: textFieldStyle),
                   ),
                   space,
@@ -102,7 +103,7 @@ class LoginScreen extends StatelessWidget {
                         },
                         keyboardType: TextInputType.visiblePassword,
                         decoration: textField('Password'),
-                        cursorColor: Colors.black26,
+                        cursorColor: textColor,
                         style: textFieldStyle),
                   ),
                   space,
@@ -120,6 +121,7 @@ class LoginScreen extends StatelessWidget {
                     },
                     child: const Button(text: 'Login'),
                   ),
+                  smallSpace,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -136,7 +138,7 @@ class LoginScreen extends StatelessWidget {
                           },
                           child: const Text(
                             'Sign Up',
-                            style: colorTextFieldStyle,
+                            style: colorTextStyle,
                           ))
                     ],
                   ),

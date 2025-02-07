@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "user app": "healer-for-user",
+    "default": "healer-for-user"
+  },
+  "targets": {},
+  "etags": {}
+}

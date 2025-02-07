@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healer_user/bloc/therapist/therapist_bloc.dart';
-import 'package:healer_user/view/therapist/widgets/empty.dart';
 import 'package:healer_user/view/therapist/widgets/therapist_card.dart';
+import 'package:healer_user/view/therapist/widgets/therapist_detail.dart';
+import 'package:healer_user/view/widgets/empty.dart';
 import 'package:healer_user/view/widgets/loading.dart';
-import 'package:lottie/lottie.dart';
 
 class AvailableTherapistsPage extends StatelessWidget {
   const AvailableTherapistsPage({super.key});
@@ -22,37 +22,57 @@ class AvailableTherapistsPage extends StatelessWidget {
           return Center(child: Text(state.message));
         } else if (state is TherapistLoaded && state.list.isEmpty) {
           return const Center(
-              child: EmptyTherapist(description: 'No one is here'));
+              child: Empty(
+            title: 'No Therapists Available',
+            subtitle:
+                'It looks like there are no therapists to send a request to right now. Check back later for available professionals!',
+            image: 'asset/emptyTherapist.jpg',
+          ));
         } else if (state is TherapistLoaded) {
-          return ListView.builder(
-            itemCount: state.list.length,
-            itemBuilder: (context, index) {
-              final therapist = state.list[index];
-              return GestureDetector(
-                onTap: () {
-                  // Navigate to details
-                },
-                child: TherapistCard(
-                  height: height,
-                  width: width,
-                  therapist: therapist,
-                ),
-              );
-            },
-          );
+          return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.75,
+              ),
+              itemCount: state.list.length,
+              itemBuilder: (context, index) {
+                final therapist = state.list[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TherapistDetails(therapist: therapist)));
+                  },
+                  child: TherapistCard(
+                    width: width,
+                    therapist: therapist,
+                    height: height,
+                  ),
+                );
+              });
         }
         return state is TherapistLoaded
-            ? ListView.builder(
+            ? GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.75,
+                ),
                 itemCount: state.list.length,
                 itemBuilder: (context, index) {
                   final therapist = state.list[index];
                   return GestureDetector(
                     onTap: () {
-                      // Navigate to details (this can be implemented later)
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TherapistDetails(therapist: therapist)));
                     },
                     child: TherapistCard(
-                      height: height,
                       width: width,
+                      height: height,
                       therapist: therapist,
                     ),
                   );

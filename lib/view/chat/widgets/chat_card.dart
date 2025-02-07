@@ -12,7 +12,7 @@ class ChatCard extends StatelessWidget {
     super.key,
     required this.therapist,
     required this.height,
-    required this.width, 
+    required this.width,
     required this.socketService,
   });
 
@@ -23,51 +23,48 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log(therapist.name);
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      
-        child: Card(
-          color: white,
-          child: SizedBox(
-              height: height * 0.1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CircleAvatar(
-                      backgroundColor: transparent,
-                      radius: width * 0.07,
-                      child: (therapist.image!.split('.').last == 'png')
-                          ? Image.network(
+      child: Card(
+        color: white,
+        child: SizedBox(
+            height: height * 0.1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircleAvatar(
+                    backgroundColor: transparent,
+                    radius: width * 0.07,
+                    child: (therapist.image.split('.').last == 'png')
+                        ? Image.network(
+                            fit: BoxFit.fitHeight,
+                            therapist.image,
+                            width: 90,
+                            height: 90,
+                          )
+                        : ClipOval(
+                            child: Image.network(
                               fit: BoxFit.fitHeight,
-                              therapist.image!,
+                              therapist.image,
                               width: 90,
                               height: 90,
-                            )
-                          : ClipOval(
-                              child: Image.network(
-                                fit: BoxFit.fitHeight,
-                                therapist.image!,
-                                width: 90,
-                                height: 90,
-                              ),
-                            )),
-                  SizedBox(
-                    width: width * 0.68,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(therapist.name, style: smallBold),
-                        smallSpace,
-                        const Text('Message.....', style: textFieldStyle),
-                      ],
-                    ),
+                            ),
+                          )),
+                SizedBox(
+                  width: width * 0.68,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(therapist.profile.name, style: smallBold),
+                      smallSpace,
+                      const Text('Message.....', style: textFieldStyle),
+                    ],
                   ),
-                ],
-              )),
-        ),
-      
+                ),
+              ],
+            )),
+      ),
     );
   }
 }

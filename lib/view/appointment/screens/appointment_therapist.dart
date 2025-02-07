@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:healer_user/bloc/therapist/therapist_bloc.dart';
 import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/view/appointment/widgets/therapist_card.dart';
-import 'package:healer_user/view/therapist/widgets/empty.dart';
-import 'package:healer_user/view/therapist/widgets/therapist_detail.dart';
+import 'package:healer_user/view/widgets/empty.dart';
 import 'package:healer_user/view/widgets/loading.dart';
 
 class AppointmentTherapist extends StatelessWidget {
@@ -38,9 +37,11 @@ class AppointmentTherapist extends StatelessWidget {
           final therapists = state.list;
           if (therapists.isEmpty) {
             return const Center(
-              child: EmptyTherapist(
-                description:
-                    "Only clients of any therapist can book appointments",
+              child: Empty(
+                title:
+                    "Explore Our Therapists",
+                    subtitle: 'Browse through our list of available therapists and choose the one that’s right for you. Book your appointment today!',
+                    image: 'asset/emptyAppointment.jpg',
               ),
             );
           }
@@ -49,17 +50,11 @@ class AppointmentTherapist extends StatelessWidget {
               itemBuilder: (context, index) {
                 final therapist = therapists[index];
 
-                return GestureDetector(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                TherapistDetails(therapist: therapist))),
-                    child: TherapistCard(
+                return  TherapistCard(
                       height: height,
                       width: width,
                       therapist: therapist,
-                    ));
+                    );
               });
         } else {
           return const SizedBox.shrink();

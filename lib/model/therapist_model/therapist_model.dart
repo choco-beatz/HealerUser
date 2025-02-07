@@ -1,46 +1,72 @@
 class TherapistModel {
-  final String id;
-  final String email;
-  final String? role;
-  final String? image;
-  final String name;
-  final String password;
-  final String status;
-  final String profileId;
-  final String qualification;
-  final String specialization;
-  final int? experience;
-  final String bio;
+  String id;
+  String email;
+  String role;
+  String profileModel;
+  String image;
+  bool isVerified;
+  DateTime createdAt;
+  DateTime updatedAt;
+  int v;
+  TherapistProfile profile;
 
   TherapistModel({
-    required this.password,
     required this.id,
-    required this.profileId,
     required this.email,
-    this.role,
-    this.status = '',
-    this.image,
-    required this.name,
-    required this.qualification,
-    required this.specialization,
-    this.experience,
-    this.bio = '',
+    required this.role,
+    required this.profileModel,
+    required this.image,
+    required this.isVerified,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.v,
+    required this.profile,
   });
 
   factory TherapistModel.fromJson(Map<String, dynamic> json) {
-    final profile = json['profile'] ?? {};
     return TherapistModel(
-      password: json['password'] ?? '',
-      profileId: profile['_id'] ?? '',
-      id: json['_id'] ?? '',
-      email: json['email'] ?? '',
-      role: json['role'] ?? '',
-      image: json['image'] ?? '',
-      name: profile['name'] ?? '',
-      qualification: profile['qualification'] ?? '',
-      specialization: profile['specialization'] ?? '',
-      experience: profile['experience'] ?? 0,
-      bio: profile['bio'] ?? '',
+      id: json["_id"],
+      email: json["email"],
+      role: json["role"],
+      profileModel: json["profileModel"],
+      image: json["image"],
+      isVerified: json["isVerified"],
+      createdAt: DateTime.parse(json["createdAt"]),
+      updatedAt: DateTime.parse(json["updatedAt"]),
+      v: json["__v"],
+      profile: TherapistProfile.fromJson(json["profile"]),
+    );
+  }
+}
+
+class TherapistProfile {
+  String id;
+  String name;
+  String qualification;
+  String specialization;
+  int experience;
+  String bio;
+  int v;
+
+  TherapistProfile({
+    required this.id,
+    required this.name,
+    required this.qualification,
+    required this.specialization,
+    required this.experience,
+    required this.bio,
+    required this.v,
+  });
+
+  factory TherapistProfile.fromJson(Map<String, dynamic> json) {
+    return TherapistProfile(
+      id: json["_id"],
+      name: json["name"],
+      qualification: json["qualification"],
+      specialization: json["specialization"],
+      experience: json["experience"],
+      bio: json["bio"],
+      v: json["__v"],
     );
   }
 }

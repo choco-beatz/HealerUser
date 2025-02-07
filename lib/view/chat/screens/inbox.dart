@@ -8,6 +8,7 @@ import 'package:healer_user/view/chat/screens/contacts.dart';
 import 'package:healer_user/view/chat/screens/message_screen.dart';
 import 'package:healer_user/view/chat/widgets/message_card.dart';
 import 'package:healer_user/view/widgets/appbar.dart';
+import 'package:healer_user/view/widgets/empty.dart';
 import 'package:healer_user/view/widgets/floating_button.dart';
 import 'package:healer_user/view/widgets/loading.dart';
 import 'package:intl/intl.dart';
@@ -37,6 +38,13 @@ class Inbox extends StatelessWidget {
             return ListView.builder(
               itemCount: chats.length,
               itemBuilder: (context, index) {
+                if (chats.isEmpty) {
+                  return const Empty(
+                      title: 'Your Inbox is Empty',
+                      subtitle:
+                          'Once you start chatting with your therapist, your messages will appear here. Reach out and start the conversation!',
+                      image: 'asset/emplyInbox.jpg');
+                }
                 final chat = chats[index];
                 final therapistParticipant = chat.participants.firstWhere(
                   (participant) =>

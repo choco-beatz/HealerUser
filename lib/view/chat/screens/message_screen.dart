@@ -8,6 +8,7 @@ import 'package:healer_user/services/chat/socket.dart';
 import 'package:healer_user/services/user/user_id.dart';
 import 'package:healer_user/view/chat/widgets/chat_screen_app_bar.dart';
 import 'package:healer_user/view/chat/widgets/message_bubble.dart';
+import 'package:healer_user/view/widgets/empty.dart';
 
 class Message {
   final String text;
@@ -135,7 +136,7 @@ class ChatScreenState extends State<ChatScreen> {
       },
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80),
+          preferredSize: const Size.fromHeight(80),
           child: ChatAppBar(
             title: widget.name,
             image: widget.image,
@@ -150,6 +151,13 @@ class ChatScreenState extends State<ChatScreen> {
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
                   final message = _messages[index];
+                  if (_messages.length == 0) {
+                    return const Empty(
+                        title: 'No Messages Yet',
+                        subtitle:
+                            'Say hello and start the conversation with your therapist. Your messages will appear here!',
+                        image: "asset/emptyConvo.jpg");
+                  }
                   return MessageBubble(message: message);
                 },
               ),
@@ -176,10 +184,7 @@ class ChatScreenState extends State<ChatScreen> {
       ),
       child: Row(
         children: [
-          IconButton(
-            icon: const Icon(Icons.attach_file),
-            onPressed: () {},
-          ),
+          
           Expanded(
             child: TextField(
               controller: _messageController,

@@ -48,7 +48,7 @@ Future<bool> confirmSlots(String therapistid, ConfirmSlotModel slot) async {
 
 Future<List<AppointmentModel>> slotStatus(String status) async {
   final response = await makeRequest('$slotStatusUrl$status', 'GET');
-  log(response!.body);
+  
   if (response == null || response.statusCode != 200) return [];
 
   try {

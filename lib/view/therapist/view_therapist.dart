@@ -73,15 +73,16 @@ class _ViewTherapistState extends State<ViewTherapist>
           bottom: TabBar(
             controller: tabController,
             labelColor: white,
-            unselectedLabelColor: main1,
+            dividerColor: white,
+            unselectedLabelColor: main2,
             indicator: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: main1,
+              color: main2,
             ),
             tabs: const [
               Tab(text: "      Available      "),
               Tab(text: "       Pending       "),
-              Tab(text: "       On going       "),
+              Tab(text: "       On going        "),
             ],
           ),
         ),

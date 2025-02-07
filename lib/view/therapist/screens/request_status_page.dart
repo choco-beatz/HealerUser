@@ -1,11 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:healer_user/bloc/therapist/therapist_bloc.dart';
-import 'package:healer_user/view/therapist/widgets/empty.dart';
-import 'package:healer_user/view/therapist/widgets/therapist_card_ongoing.dart';
-import 'package:healer_user/view/therapist/widgets/therapist_card_pending.dart';
+import 'package:healer_user/view/therapist/widgets/therapist_card.dart';
+import 'package:healer_user/view/therapist/widgets/therapist_detail.dart';
+import 'package:healer_user/view/widgets/empty.dart';
 import 'package:healer_user/view/widgets/loading.dart';
 
 class RequestStatusPage extends StatelessWidget {
@@ -28,24 +27,35 @@ class RequestStatusPage extends StatelessWidget {
           return Center(child: Text(state.message));
         } else if (state is RequestStatusLoaded && state.list.isEmpty) {
           return const Center(
-              child: EmptyTherapist(description: 'No one is here'));
+              child: Empty(
+            title: 'Waiting for a Response',
+            subtitle:
+                "Once you’ve sent a request to a therapist. Once they accept, you’ll see them here. Hang tight!",
+            image: 'asset/emptyPending.jpg',
+          ));
         } else if (state is RequestStatusLoaded) {
-          return ListView.builder(
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.75,
+            ),
             itemCount: state.list.length,
             itemBuilder: (context, index) {
               final therapist = state.list[index];
               return GestureDetector(
                 onTap: () {
-                  // Navigate to details
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TherapistDetails(therapist: therapist)));
                 },
-                child: status == "Accepted"
-                    ? TherapistCardOngoing(
-                        therapist: therapist, height: height, width: width)
-                    : TherapistCardPending(
-                        height: height,
-                        width: width,
-                        therapist: therapist,
-                      ),
+                child: TherapistCard(
+                  status: status,
+                  height: height,
+                  width: width,
+                  therapist: therapist,
+                ),
               );
             },
           );

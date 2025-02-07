@@ -15,4 +15,5 @@ const verifyPaymentUrl = '${baseUrl}payment/verify';
 const inboxUrl = '${baseUrl}chats';
 const profileUrl = '${baseUrl}user/profile';
 const editProfileUrl = '${baseUrl}user/client/profile';
+const agoraTokenUrl = '${baseUrl}agora/generate-token';
 

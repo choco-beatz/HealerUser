@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/textstyle.dart';
 import 'package:healer_user/view/widgets/textfield.dart';
 
@@ -18,7 +19,7 @@ Widget buildField({
           initialValue: initialValue,
           
           decoration: textField(initialValue),
-          cursorColor: Colors.black26,
+          cursorColor: textColor,
           style: textFieldStyle,
         ),
       ),

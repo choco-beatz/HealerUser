@@ -5,6 +5,7 @@ import 'package:healer_user/constants/snackbar.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
 import 'package:healer_user/view/appointment/widgets/confirm_slot.dart';
+import 'package:healer_user/view/appointment/widgets/empty_slot.dart';
 import 'package:healer_user/view/widgets/loading.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -53,7 +54,7 @@ class _AppointmentCalenderState extends State<AppointmentCalender> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
-                color: main2trans,
+                color: main1trans,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
@@ -141,9 +142,7 @@ class _AppointmentCalenderState extends State<AppointmentCalender> {
                 } else if (state is SlotsLoaded) {
                   final slots = state.slots;
                   if (slots.isEmpty) {
-                    return const Center(
-                      child: Text('No slots available'),
-                    );
+                    return EmptySlot();
                   }
 
                   return Wrap(

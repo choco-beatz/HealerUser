@@ -9,6 +9,10 @@ Future<void> storeToken(String token) async {
   await secureStorage.write(key: 'token', value: token);
 }
 
+Future<void> storeAgoraToken(String agoraToken) async {
+  await secureStorage.write(key: 'agoraToken', value: agoraToken);
+}
+
 bool isExpired(String token) {
   try {
     final jwt = JWT.decode(token);
@@ -31,6 +35,12 @@ Future<String?> getValidToken() async {
   if (token == null || isExpired(token)) {
     return null;
   }
+  return token;
+}
+
+Future<String?> getAgoraToken() async {
+  String? token = await secureStorage.read(key: 'agoraToken');
+
   return token;
 }
 

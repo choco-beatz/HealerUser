@@ -1,14 +1,20 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:healer_user/services/agora/constants.dart';
+import 'package:healer_user/services/api_helper.dart';
+import 'package:healer_user/services/endpoints.dart';
+import 'package:healer_user/services/token.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AgoraService {
   late RtcEngine engine;
+
   bool localUserJoined = false;
   int? remoteUid;
 
+  // Initialize Agora RTC engine and RTM client
   Future<void> initializeAgora(String appId) async {
     try {
       // Ensure permissions are granted before initialization
@@ -17,20 +23,20 @@ class AgoraService {
         throw 'Permissions not granted';
       }
 
-      // Verbose error handling
+      // Initialize Agora RTC engine
       engine = createAgoraRtcEngine();
       await engine.initialize(
         RtcEngineContext(
           appId: appId,
-          // Add logging or error callback
+          channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
           logConfig: const LogConfig(
             level: LogLevel.logLevelError,
           ),
         ),
       );
+      log('Agora RTC engine initialized successfully.');
     } catch (e) {
       log('Agora Initialization Error: $e');
-      // Provide more detailed error handling
       throw 'Agora initialization failed. Check app ID, permissions, and network.';
     }
   }
@@ -48,61 +54,30 @@ class AgoraService {
     return true;
   }
 
-  Future<void> joinVideoCall({
-    required String callID,
-    required int uid,
-    required String token,
-    required Function onLocalUserJoined,
-    required Function(int) onUserJoined,
-    required Function(int) onUserOffline,
-  }) async {
-    await engine.joinChannel(
-      token: token,
-      channelId: channel,
-      uid: uid,
-      options: const ChannelMediaOptions(),
+ Future<bool> fetchAgoraToken() async {
+  try {
+    final response = await makeRequest(
+      agoraTokenUrl,
+      'POST',
+      body: jsonEncode({"channelName": channel, "uid": '0'}),
     );
 
-    engine.registerEventHandler(
-      RtcEngineEventHandler(
-        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          log("Local user ${connection.localUid} joined");
-          onLocalUserJoined();
-        },
-        onUserJoined:
-            (RtcConnection connection, int newRemoteUid, int elapsed) {
-          log("Remote user $remoteUid joined");
-          onUserJoined(newRemoteUid);
-        },
-        onUserOffline: (RtcConnection connection, int offlineRemoteUid,
-            UserOfflineReasonType reason) {
-          log("Remote user $offlineRemoteUid left channel");
-          onUserOffline(offlineRemoteUid);
-        },
-      ),
-    );
-  }
+    if (response == null || response.statusCode != 200) {
+      log('Failed to fetch Agora token');
+      return false;
+    }
 
-  Future<void> joinAudioCall(String callID, int userID, String token) async {
-    await engine.enableAudio();
-    await engine.startPreview();
-    await engine.joinChannel(
-      token: token,
-      channelId: channel,
-      uid: userID,
-      options: const ChannelMediaOptions(),
-    );
+    final responseData = jsonDecode(response.body);
+    final tokenValue = responseData['token'].toString();
 
-    log("Joined audio call with Call ID: $callID and User ID: $userID");
+    if (tokenValue.isNotEmpty) {
+      await secureStorage.write(key: 'agoraToken', value: tokenValue);
+      return true;
+    }
+  } catch (e) {
+    log('Error fetching token: $e');
   }
+  return false;
+}
 
-  Future<void> leaveCall() async {
-    await engine.leaveChannel();
-    log("Left the call.");
-  }
-
-  Future<void> dispose() async {
-    await engine.leaveChannel();
-    await engine.release();
-  }
 }

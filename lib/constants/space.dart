@@ -5,7 +5,7 @@ const space = SizedBox(
 );
 
 const hSpace = SizedBox(
-  width: 10,
+  width: 15,
 );
 
 const smallSpace = SizedBox(

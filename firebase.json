@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "healer-for-user-23f1f",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

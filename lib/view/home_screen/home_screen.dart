@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healer_user/bloc/agora/agora_bloc.dart';
 import 'package:healer_user/bloc/appointment/appointment_bloc.dart';
 import 'package:healer_user/bloc/chat/chat_bloc.dart';
 import 'package:healer_user/bloc/registeration/registeration_bloc.dart';
-import 'package:healer_user/bloc/therapist/therapist_bloc.dart';
 import 'package:healer_user/bloc/user/user_bloc.dart';
 import 'package:healer_user/constants/colors.dart';
 import 'package:healer_user/constants/snackbar.dart';
@@ -13,10 +13,9 @@ import 'package:healer_user/main.dart';
 import 'package:healer_user/services/chat/socket.dart';
 import 'package:healer_user/services/user/user_id.dart';
 import 'package:healer_user/view/appointment/screens/appointment_therapist.dart';
-import 'package:healer_user/view/call/screens/call.dart';
 import 'package:healer_user/view/call/widgets/incoming_call_dialog.dart';
 import 'package:healer_user/view/chat/screens/inbox.dart';
-import 'package:healer_user/view/home_screen/widgets/appointment.dart';
+import 'package:healer_user/view/home_screen/widgets/todays_appointment.dart';
 import 'package:healer_user/view/home_screen/widgets/drawer.dart';
 import 'package:healer_user/view/home_screen/widgets/home_app_bar.dart';
 import 'package:healer_user/view/home_screen/widgets/menu_card.dart';
@@ -39,30 +38,42 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     context.read<RegisterationBloc>().add(CheckTokenEvent());
-    // context.read<UserBloc>().add(GetProfileEvent());
     _initializeSocket();
+    context.read<AgoraBloc>().add(GetToken());
     super.initState();
   }
 
-  Future<void> _initializeSocket() async {
-    userId = await getUserId();
+  void _initializeSocket() async {
+  userId = await getUserId();
 
-    if (userId != null) {
-      socketService.initialize(userId: userId!);
-    } else {
-      log('UserId is null. Socket initialization skipped.');
-    }
-
-    socketService.listenToEvent('incoming-call', (data) {
-      final ctx = navigatorKey.currentState?.overlay?.context;
-
-      if (ctx != null) {
-        showIncomingCallDialog(ctx, data, socketService, userId!);
-      } else {
-        log('Context is null. Cannot show incoming call dialog.');
-      }
-    });
+  if (userId != null) {
+    socketService.initialize(userId: userId!);
+  } else {
+    log('UserId is null. Socket initialization skipped.');
   }
+
+  socketService.listenToEvent('incoming-call', (data) {
+    final ctx = navigatorKey.currentState?.overlay?.context;
+
+    if (ctx != null) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+          builder: (context) => IncomingCallScreen(
+            callerId: data['from']?['userId'],
+            callerName: data['from']?['name'] ?? 'Unknown',
+            callerImage: data['from']?['image'],
+            socketService: socketService,
+            userId: userId!,
+          ),
+        ),
+      );
+    } else {
+      log('Context is null. Cannot navigate to IncomingCallScreen.');
+    }
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
           drawer: const DrawerWidget(),
           body: BlocListener<RegisterationBloc, RegisterationState>(
             listener: (context, state) {
-              log('redirect: ${state.redirect.toString()}');
               if (state.redirect == true) {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => LoginScreen()));
@@ -104,12 +114,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         }).toList();
 
                         if (todayAppointments.isNotEmpty) {
-                          return Expanded(
-                            child: AppointmentToday(
-                              height: height,
-                              width: width,
-                              appointments: todayAppointments,
-                            ),
+                          return AppointmentToday(
+                            height: height,
+                            width: width,
+                            appointments: todayAppointments,
                           );
                         } else {
                           return const SizedBox.shrink();
@@ -124,85 +132,59 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ViewTherapist()));
-                              },
-                              child: MenuCard(
-                                width: width,
-                                image: 'asset/psychology.png',
-                                title: 'Therapists',
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AppointmentTherapist())),
-                              child: MenuCard(
-                                width: width,
-                                image: 'asset/appointment.png',
-                                title: 'Appointment',
-                              ),
-                            ),
-                          ],
+                  Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ViewTherapist()));
+                        },
+                        child: MenuCard(
+                          width: width,
+                          image: 'asset/psychology.png',
+                          title: 'Therapists',
+                          subtitle: 'Explore Qualified Therapists',
                         ),
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MultiBlocProvider(
-                                          providers: [
-                                            BlocProvider(
-                                              create: (context) => ChatBloc()
-                                                ..add(LoadChatsEvent()),
-                                            ),
-                                          ],
-                                          child: Inbox(
-                                            socketService: socketService,
-                                          ),
-                                        )),
-                              ),
-                              child: MenuCard(
-                                width: width,
-                                image: 'asset/chat1.png',
-                                title: 'Chat',
-                              ),
-                            ),
-                            // InkWell(
-                            //   onTap: () => Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => BlocProvider(
-                            //               create: (context) => TherapistBloc()
-                            //                 ..add(RequestStatusEvent(
-                            //                     status: "Accepted")),
-                            //               child: const Contacts(),
-                            //             )),
-                            //   ),
-                            //   child: MenuCard(
-                            //     width: width,
-                            //     image: 'asset/call.png',
-                            //     title: 'Calls',
-                            //   ),
-                            // )
-                          ],
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const AppointmentTherapist())),
+                        child: MenuCard(
+                          width: width,
+                          image: 'asset/appointment.png',
+                          title: 'Appointment',
+                          subtitle: 'Book Your Appointments Here',
                         ),
-                      ],
-                    ),
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider(
+                                        create: (context) =>
+                                            ChatBloc()..add(LoadChatsEvent()),
+                                      ),
+                                    ],
+                                    child: Inbox(
+                                      socketService: socketService,
+                                    ),
+                                  )),
+                        ),
+                        child: MenuCard(
+                          width: width,
+                          image: 'asset/chat1.png',
+                          title: 'Chat',
+                          subtitle: 'Chat with Your Therapist',
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),

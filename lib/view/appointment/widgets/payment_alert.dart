@@ -5,6 +5,7 @@ import 'package:healer_user/bloc/appointment/appointment_bloc.dart';
 import 'package:healer_user/constants/space.dart';
 import 'package:healer_user/constants/textstyle.dart';
 import 'package:healer_user/view/appointment/widgets/field.dart';
+import 'package:healer_user/view/appointment/widgets/payment_completed_dialog.dart';
 import 'package:healer_user/view/widgets/dialog_button.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
@@ -17,13 +18,14 @@ void showPaymentSlotDialog(String id, int amount, BuildContext context) {
         return BlocListener<AppointmentBloc, AppointmentState>(
           listener: (context, state) {
             if (state is PaymentInitiated && state.paymentResponse != null) {
-      _initiateRazorpayPayment(
-        context,
-        state.paymentResponse.amount,
-        state.paymentResponse.orderId,
-      );
-    }
-  },
+              log('initiated');
+              _initiateRazorpayPayment(
+                context,
+                state.paymentResponse.amount,
+                state.paymentResponse.orderId,
+              );
+            }
+          },
           child: AlertDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -111,8 +113,9 @@ void _initiateRazorpayPayment(
 
 void handlePaymentErrorResponse(
     BuildContext context, PaymentFailureResponse response) {
-  showAlertDialog(context, "Payment Failed",
-      "Code: ${response.code}\nDescription: ${response.message}\nMetadata: ${response.error.toString()}");
+  showLottieDialog(context, "Payment Failed",
+      "Code: ${response.code}\nDescription: ${response.message}\nMetadata: ${response.error.toString()}"
+      'asset/failed.json');
 }
 
 void handlePaymentSuccessResponse(
@@ -121,32 +124,15 @@ void handlePaymentSuccessResponse(
       paymentId: response.paymentId!,
       orderId: response.orderId!,
       signature: response.signature!));
-  showAlertDialog(context, "Payment Successful",
-      "Payment ID: ${response.paymentId}\nOrder ID: ${response.orderId}\nSignature: ${response.signature}");
+  showLottieDialog(context, "Payment Successful",
+      "Payment ID: ${response.paymentId}\nOrder ID: ${response.orderId}\nSignature: ${response.signature}"
+      'asset/success.json');
 }
 
 void handleExternalWalletSelected(
     BuildContext context, ExternalWalletResponse response) {
-  showAlertDialog(
+  showLottieDialog(
       context, "External Wallet Selected", "${response.walletName}");
 }
 
-void showAlertDialog(BuildContext context, String title, String message) {
-  // set up the buttons
-  ElevatedButton(
-    child: const Text("Continue"),
-    onPressed: () {},
-  );
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text(title),
-    content: Text(message),
-  );
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
+

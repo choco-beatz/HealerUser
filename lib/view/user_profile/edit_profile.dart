@@ -189,13 +189,26 @@ class _EditProfileState extends State<EditProfile> {
               onTap: () {
                 if (formkey.currentState!.validate()) {
                   context.read<UserBloc>().add(EditProfileEvent(
-                      name: nameController.text,
-                      gender: selectedGender!,
-                      age: int.tryParse(ageController.text)!,
-                      image: image));
-                  context.read<UserBloc>().add(GetProfileEvent());
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()));
+                        name: nameController.text,
+                        gender: selectedGender!,
+                        age: int.tryParse(ageController.text)!,
+                        image: image,
+                      ));
+
+                  // Listen to UserBloc state changes
+                  context.read<UserBloc>().stream.listen((state) {
+                    if (state is ProfileLoaded) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()),
+                      );
+                    } else if (state is ProfileError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.message)),
+                      );
+                    }
+                  });
                 } else {
                   ScaffoldMessenger.of(context)
                       .showSnackBar(somethingWentWrong);

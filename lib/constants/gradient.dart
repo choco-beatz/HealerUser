@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
 
+
 const gradient = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [
-      main2,
-      main1,
-    ]);
+  colors: [main2, main1],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);
 
 const redGradient = LinearGradient(
     begin: Alignment.topCenter,
@@ -17,10 +16,7 @@ const redGradient = LinearGradient(
       red1,
     ]);
 
-    const nullGradient = LinearGradient(
+const nullGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      white,
-      white
-    ]);
+    colors: [white, white]);
