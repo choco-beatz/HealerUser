@@ -7,12 +7,10 @@ Healer is a **therapy management application** built using **Flutter**. It allow
 ## 📖 Table of Contents  
 - [Description](#description)  
 - [Features](#features)  
-- [Screenshots](#screenshots)  
 - [Technologies Used](#technologies-used)  
 - [Installation](#installation)  
 - [Usage](#usage)  
 - [Contributing](#contributing)  
-- [License](#license)  
 
 ## 📝 Description  
 Healer is designed to simplify the therapy process for clients. Users can explore therapists, request to be their clients, and once approved, book appointments and chat in real-time. The app also includes appointment reminders and supports multiple therapist-client relationships.  
